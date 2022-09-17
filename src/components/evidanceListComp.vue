@@ -88,12 +88,12 @@
                             <label class="form-label">Message</label>
                             <input type="text" v-model="message" class="form-control">
                         </div>
-                        <div class="mb-3">
+                        <!-- <div class="mb-3">
                             <label class="form-label">Bukti Evidance</label>
                             <div>
-                                <!-- <img src="" alt=""> -->
+                                <img src="" alt="">
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </form>
             </div>
