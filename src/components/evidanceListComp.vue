@@ -11,7 +11,7 @@
                         <p class="card-text">Jumlah Evidance hari ini tersedia</p>
                     </div>
                     <div class="col-4 d-flex justify-content-center align-items-center">
-                        <h3>{{model.length}}</h3>
+                        <h3 class="total-evidance">{{model.length}}</h3>
                     </div>
                 </div>
             </div>
@@ -24,7 +24,7 @@
                         <p class="card-text">Jumlah evidance yang telah dikirim ke customer</p>
                     </div>
                     <div class="col-4 d-flex justify-content-center align-items-center">
-                        <h3>{{send}}</h3>
+                        <h3 class="total-evidance">{{send}}</h3>
                     </div>
                 </div>
             </div>
@@ -38,7 +38,7 @@
                         <p class="card-text">Jumlah evidance yang tidak dikirimkan ke customer</p>
                     </div>
                     <div class="col-4 d-flex justify-content-center align-items-center">
-                        <h3>0</h3>
+                        <h3 class="total-evidance">0</h3>
                     </div>
                 </div>
             </div>

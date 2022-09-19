@@ -1,6 +1,6 @@
 :root{
     --second-a: #EAEFF0;
-    --second-b: #5ABA39;
+    --second-b: #198754;
 }
 
 .auth{
@@ -10,7 +10,7 @@
 }
 
 .auth .wrapper{
-    width: 80%;
+    width: 70%;
     margin: auto;
     border-radius: 20px;
     overflow: hidden;
@@ -64,9 +64,9 @@ input:focus{
     box-shadow: none !important;
 }
 
-.btnn .btn{
-    color: white !important;
-    background-color: var(--second-b) !important;
+.btnn .btn, .btnn .btn:first-child:active, .btn:first-child:hover{
+    color: white;
+    background-color: var(--second-b);
 }
 
 
@@ -190,3 +190,55 @@ input:focus{
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
+
+  .form-box .logo{
+    width: 80%;
+  }
+  .logo img{
+    display: block;
+  }
+
+  .alert-form{
+    width: 80%;
+  }
+
+  .btn.register, :not(.btn-check) + .btn:hover{
+    background-color: transparent;
+    color: var(--second-b);
+    border: 1px solid var(--second-b);
+  }
+
+  .btnn .btn.back, :not(.btn-check) + .btn.back:hover, :not(.btn-check) + .btn.back:active{
+    background-color: transparent;
+    color: var(--second-b);
+    border: none;
+  }
+
+  .link{
+    text-decoration: none;
+    color: #9c9c9c;
+  }
+
+  .nav-pills .nav-link.active{
+    background-color: var(--second-b);
+  }
+
+ .total-evidance{
+  color: var(--second-b);
+ }
+
+ .btn-add{
+  background-color: var(--second-b);
+  border: none;
+ }
+
+ .p-form{
+  border-radius: 5px;
+  border: 1px solid #9c9c9c;
+  padding: 5px 8px;
+ }
+
+ .devide{
+  margin: 0 70px;
+  border-left: 1px solid #cccccc;
+ }

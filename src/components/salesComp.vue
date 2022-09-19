@@ -1,9 +1,10 @@
 <template>
     <div>
         <h2>Sales</h2>
+        <p class="m-0">Table list data sales</p>
     </div>
     <div class="mt-4 d-flex">
-        <button class="btn btn-primary me-3" @click="tambah">Tambah</button>
+        <button class="btn-add btn btn-primary me-3" @click="tambah">+Sales</button>
         <!-- <div class="dropdown">
             <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
@@ -43,7 +44,7 @@
                                 class="btn btn-danger btn-xs" data-title="Delete" data-toggle="modal" @click="del(d.id)"
                                 data-target="#delete">
                                 <font-awesome-icon icon="trash" />
-                            </button></p>
+                        </button></p>
                     </td>
                 </tr>
             </tbody>
@@ -75,7 +76,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Email</label>
-                            <input type="email" v-model="email" class="form-control" :disabled="!isCreate" required>
+                            <input type="email" v-model="email" class="form-control"  required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Nomor Hp</label>

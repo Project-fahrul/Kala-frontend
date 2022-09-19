@@ -1,17 +1,18 @@
 <template>
     <div>
-        <h2>Customer</h2>
-        <p class="m-0">Table list data customer</p>
+        <h2>Admin</h2>
+        <p class="m-0">Profile Admin</p>
     </div>
-    <div class="mt-4">
+    <div class="mt-4 d-none">
+        <h5 class="mb-3 sub-title">Konfirmasi admin baru</h5>
+        <hr>
         <table id="mytable" class="table table-bordred table-striped">
-
             <thead>
                 <th>Name</th>
-                <th>Nomor Hp</th>
+                <th>Email</th>
                 <th>Address</th>
                 <th>Sales</th>
-                <th>View</th>
+                <th>Action</th>
             </thead>
             <tbody>
                 <tr v-for="(m, i) in model" :key="i">
@@ -20,10 +21,16 @@
                     <td>{{m.address}}</td>
                     <td>{{m.sales_name}}</td>
                     <td class="bx">
-                        <p data-placement="top" data-toggle="tooltip" title="Edit">
+                        <p data-placement="top" data-toggle="tooltip" title="Edit" class="d-inline-block">
                             <button class="btn btn-success btn-xs" data-title="Edit" data-toggle="modal"
                                 @click="lihat(m.id)" data-target="#edit">
-                                <font-awesome-icon icon="eye" />
+                                <font-awesome-icon icon="check" />
+                            </button>
+                        </p>
+                        <p data-placement="top" data-toggle="tooltip" title="Edit" class="d-inline-block ms-2">
+                            <button class="btn btn-danger btn-xs" data-title="Edit" data-toggle="modal"
+                                @click="lihat(m.id)" data-target="#edit">
+                                <font-awesome-icon icon="trash" />
                             </button>
                         </p>
                     </td>
@@ -69,7 +76,8 @@
                             </div>
                             <div class="mb-3" v-else>
                                 <label class="form-label">Nama Sales</label>
-                                <select required v-model="saledIDSelected" class="form-select" aria-label="Default select example">
+                                <select required v-model="saledIDSelected" class="form-select"
+                                    aria-label="Default select example">
                                     <option selected>Pilih Sales</option>
                                     <option v-for="(s,i) in salesModel" :value="s.id" :key="i">{{s.name}}</option>
                                 </select>
@@ -80,7 +88,8 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Tanggal Angsuran</label>
-                                <input type="date" class="form-control" :disabled="view" required v-model="dateAngsuran">
+                                <input type="date" class="form-control" :disabled="view" required
+                                    v-model="dateAngsuran">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Tanggal STNK</label>
@@ -88,15 +97,18 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Tanggal Lahir</label>
-                                <input type="date" class="form-control" :disabled="view" required v-model="dateBirthday">
+                                <input type="date" class="form-control" :disabled="view" required
+                                    v-model="dateBirthday">
                             </div>
                             <div class="mb-3" v-if="view">
                                 <label class="form-label">Type Angsuran</label>
-                                <input type="text" class="form-control" :disabled="view" required v-model="typeAngsuran">
+                                <input type="text" class="form-control" :disabled="view" required
+                                    v-model="typeAngsuran">
                             </div>
                             <div class="mb-3" v-else>
                                 <label class="form-label">Type Angsuran</label>
-                                <select required v-model="typeAngsuran" class="form-select" aria-label="Default select example">
+                                <select required v-model="typeAngsuran" class="form-select"
+                                    aria-label="Default select example">
                                     <option value="Kredit">Kredit</option>
                                     <option selected value="Tunai">Tunai</option>
                                 </select>
@@ -107,7 +119,8 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Tipe Kendaraan</label>
-                                <input type="text" class="form-control" :disabled="view" required v-model="typeKendaraan">
+                                <input type="text" class="form-control" :disabled="view" required
+                                    v-model="typeKendaraan">
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Leasing</label>
@@ -115,22 +128,75 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Total Angsuran</label>
-                                <input type="number" min="0" max="60"  class="form-control" :disabled="view" required v-model="totalAngsuran">
+                                <input type="number" min="0" max="60" class="form-control" :disabled="view" required
+                                    v-model="totalAngsuran">
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" v-if="!view" >Save</button>
+                            <button type="submit" class="btn btn-primary" v-if="!view">Save</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    <div class="mt-3">
-        <button class="btn disabled">Prev</button>
-        <p class="btn page-evidance">1/1</p>
-        <button class="btn disabled">Next</button>
+    <div class="mt-4">
+        <h5>
+            Profile Anda
+        </h5>
+        <hr>
+        <div class="d-flex">
+            <div class="flex-grow-1">
+                <div class="mb-3">
+                    <p class="p-label">Name</p>
+                    <p class="p-form">Fahrul</p>
+                </div>
+                <div class="mb-3">
+                    <p class="p-label">Email</p>
+                    <p class="p-form">fahrulputra40@gmail.com</p>
+                </div>
+            </div>
+            <div class="devide"></div>
+            <div class="flex-grow-1">
+                <div>
+                    <h5>Edit Profile</h5>
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Name</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email address</label>
+                            <input type="email" class="form-control">
+                        </div>
+                        <div>
+                            <button class="btn btn-add btn-primary">Change</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="mt-5">
+                    <h5>Change Password</h5>
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Password lama</label>
+                            <input type="password" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Password baru</label>
+                            <input type="password" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Konfirmasi password baru</label>
+                            <input type="password" class="form-control">
+                        </div>
+                        <div>
+                            <button class="btn btn-add btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -140,7 +206,7 @@ import service from "@/service"
 import bootstrap from "bootstrap/dist/js/bootstrap"
 
 
-function diffDate(n,dt){
+function diffDate(n, dt) {
     let x = new Date(dt) - new Date(n)
     return Math.ceil(x / (1000 * 3600 * 24));
 }
@@ -176,12 +242,12 @@ export default {
         }
     },
     methods: {
-        async save(){
+        async save() {
             this.errorTglAngsuran = false
             this.errorTglDec = false
             this.errorTglSTNK = false
             const res = this.dateValidation()
-            if(res && this.isCreate){
+            if (res && this.isCreate) {
                 this.loading = true
                 let post = await service.createCustomer({
                     name: this.name,
@@ -198,11 +264,11 @@ export default {
                     "type_angsuran": this.typeAngsuran,
                     "total_angsuran": this.totalAngsuran
                 })
-                if(post){
+                if (post) {
                     this.bootModal.toggle()
                 }
                 this.loading = false
-            }else if(res){
+            } else if (res) {
                 this.loading = true
                 let post = await service.editCustomer(this.idd, {
                     name: this.name,
@@ -219,7 +285,7 @@ export default {
                     "type_angsuran": this.typeAngsuran,
                     "total_angsuran": this.totalAngsuran
                 })
-                if(post){
+                if (post) {
                     this.bootModal.toggle()
                 }
                 this.loading = false
@@ -300,7 +366,7 @@ export default {
             this.address = ""
             this.phone = ""
             this.salesName = ""
-            this.dateDEC =this.now
+            this.dateDEC = this.now
             this.dateBirthday = ""
             this.dateSTNK = this.now
             this.dateAngsuran = this.now
@@ -312,9 +378,9 @@ export default {
             this.loading = false
             this.bootModal.toggle()
         },
-        async del(id, name){
+        async del(id, name) {
             const res = await confirm(`Delete customer ${name}`)
-            if(res){
+            if (res) {
                 await service.deleteCustomer(id)
                 let data = await service.listCustomer(1)
                 if (data.status)
@@ -325,18 +391,18 @@ export default {
                 }
             }
         },
-        dateValidation(){
+        dateValidation() {
             let res = true
             console.log(diffDate(this.now, this.dateAngsuran));
-            if(diffDate(this.now, this.dateAngsuran) <= 0){
+            if (diffDate(this.now, this.dateAngsuran) <= 0) {
                 res = false
                 this.errorTglAngsuran = true
             }
-            if(diffDate(this.now, this.dateDEC) <= 0){
+            if (diffDate(this.now, this.dateDEC) <= 0) {
                 res = false
                 this.errorTglDec = true
             }
-            if(diffDate(this.now, this.dateSTNK) <= 0){
+            if (diffDate(this.now, this.dateSTNK) <= 0) {
                 res = false
                 this.errorTglSTNK = true
             }
