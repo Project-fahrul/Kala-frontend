@@ -75,15 +75,15 @@
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Tanggal DEC</label>
+                                <label class="form-label">Tanggal servise selanjutnya</label>
                                 <input type="date" class="form-control" :disabled="view" required v-model="dateDEC">
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Tanggal Angsuran</label>
+                                <label class="form-label">Tanggal angsuran selanjutnya</label>
                                 <input type="date" class="form-control" :disabled="view" required v-model="dateAngsuran">
                             </div>
                             <div class="mb-3">
-                                <label class="form-label">Tanggal STNK</label>
+                                <label class="form-label">Tanggal STNK selanjutnya</label>
                                 <input type="date" class="form-control" :disabled="view" required v-model="dateSTNK">
                             </div>
                             <div class="mb-3">

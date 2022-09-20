@@ -23,7 +23,7 @@
             </div>
                 <form @submit.prevent="login">
                     <div class="mb-4 form-box">
-                        <label for="exampleInputEmail1" class="form-label">Email address</label>
+                        <label for="exampleInputEmail1" class="form-label">Email</label>
                         <input v-model="email" type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required>
                     </div>
                     <div class="mb-4 form-box">
@@ -33,14 +33,14 @@
                     <div class="form-box">
                         <div></div>
                         <div>
-                            <router-link to="/forgot-password" class="link">Forgot password</router-link>
+                            <router-link to="/forgot-password" class="link">Lupa password</router-link>
                         </div>
                     </div>
                     <div class="mb-4 form-box">
                         <div></div>
                         <div class="btnn">
-                            <button class="btn">Sign In</button>
-                            <router-link to="/register" class="btn ms-3 register">Sign Up</router-link>
+                            <button class="btn">Masuk</button>
+                            <router-link to="/register" class="btn ms-3 register">Registrasi</router-link>
                         </div>
                     </div>
                 </form>

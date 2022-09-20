@@ -2,8 +2,9 @@ import axios from "axios";
 import VueCookies  from "vue-cookies";
 
 const instance = axios.create({
-    baseURL: "http://103.63.25.154:8080",
-    timeout: 2000,
+    // baseURL: "http://103.63.25.154:8080",
+    baseURL: "http://localhost:8080"
+,    timeout: 2000,
     headers:{
         'Content-Type': 'application/json'
     }
@@ -11,6 +12,88 @@ const instance = axios.create({
 
 
 const api = {
+    verifiedUser: async (id, action) => {
+        let token = await VueCookies.get("token")
+        if(!token || token == null){
+            return false
+        }
+        let res = {
+            status : true
+        }
+        await instance.get(`user/verified/${id}/${action}`, {
+            headers: {
+                "Authorization": token
+            }
+        }).catch(()=>{
+            res.status =  false
+        })
+        return res.status
+    },
+    changePassword: async (old, newPassword)=>{
+        let token = await VueCookies.get("token")
+        let res = true
+        if(!token || token == null){
+            return false
+        }
+        await instance.patch(`/user/changePassword/self`,{
+            "oldPassword": old,
+            "newPassword": newPassword
+        }, {
+            headers:{
+                "Authorization": token
+            }
+        }).catch(()=>{
+            res = false
+        })
+
+        return res
+    },
+    userNotVerified: async ()=>{
+        let token = await VueCookies.get("token")
+        if(!token || token == null){
+            return false
+        }
+        let res = {
+            status : true
+        }
+        let data = await instance.get("/user/sales-not-verified", {
+            headers: {
+                "Authorization": token
+            }
+        }).catch(()=>{
+            res.status =  false
+        })
+
+        if(res.status){
+           res.data = data.data.data 
+        }
+        return res
+    },
+    forgotPassword: async (email)=>{
+        let data = {
+            status: true
+        };
+
+        let response = await instance.post("/user/forgot-password", {
+            email: email,
+        }).catch((err)=>{
+            data.status = false
+            data.message = err.response.data.message
+        })
+
+        if (data.status == false){
+            return data
+        }
+        else if(response.data.data.role != "admin")
+        {
+            return {
+                status: false,
+                message: "Not allowed"
+            }
+        }
+
+        return data  
+    },
     login: async (email, password)=>{
         let data = {
             status: true
@@ -20,6 +103,12 @@ const api = {
             email: email,
             password: password
         }).catch((err)=>{
+            if(err.response.status == 403){
+                data.message = "Akun anda belum di verifikasi, hubungi admin yang telah diverifikasi"
+                data.status = false
+                console.log("sini");
+                return
+            }
             data.status = false
             data.message = err.response.data.message
         })
@@ -39,9 +128,28 @@ const api = {
 
         return data
     },
-
     logout: async ()=>{
         await VueCookies.remove("token")
+    },
+    registration: async (name, email, password)=>{
+        let res = {
+            status: true
+        };
+        await instance.post("/user/registration", {
+            email: email,
+            password: password,
+            name: name
+        }).catch((e)=>{
+            console.log(e.response.data);
+            if(e.response.data.includes("duplicate key"))
+            {
+                res.message = "Email sudah terdaftar"
+            }else{
+                res.message = "Jaringan bermasalah"
+            }
+            res.status =  false
+        })
+        return res
     },
     me: async()=>{
         let token = await VueCookies.get("token")
