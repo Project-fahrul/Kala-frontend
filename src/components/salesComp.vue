@@ -65,6 +65,9 @@
                     <h5 class="modal-title" id="exampleModalLabel">Data</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <div class="alert alert-warning" role="alert" v-if="error">
+                    Tidak bisa melakukan operasi. Terjadi kesalahan atau email sudah digunakan
+                </div>
                 <form>
                     <div v-if="loading" class="modal-body mb-3 d-flex justify-content-center">
                         <div class="loader"></div>
@@ -108,7 +111,8 @@ export default {
             model: [],
             bootModel: null,
             isCreate: false,
-            selectedUser: null
+            selectedUser: null,
+            error: false
         }
     },
     methods: {
@@ -131,38 +135,44 @@ export default {
             this.model = data.data
         },
         async edit(id) {
+            this.error = false
             this.selectedUser = id
             this.isCreate = false
             this.view = false
             this.bootModel.toggle()
             let sales = await service.getSales(id)
-            console.log(sales);
 
             this.email = sales.data.email
             this.phoneNumber = sales.data.phone_number
             this.name = sales.data.name
         },
         tambah() {
+            this.error = false
             this.isCreate = true
             this.view = false
             this.bootModel.toggle()
         },
         async save() {
-            this.bootModel.toggle()
+            let res = true;
             if (this.isCreate) {
-                await service.createSales({
+                res = await service.createSales({
                     role: "sales",
                     name: this.name,
                     email: this.email,
                     "phone_number": this.phoneNumber
                 })
             } else {
-                await service.editSales(this.selectedUser, {
+                res = await service.editSales(this.selectedUser, {
                     name: this.name,
                     email: this.email,
                     "phone_number": this.phoneNumber
                 })
             }
+            if(!res){
+                this.error = true
+                return
+            }
+            this.bootModel.toggle()
             let data = await service.allSales(0)
             this.model = data.data
         }

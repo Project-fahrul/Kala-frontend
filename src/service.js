@@ -1,5 +1,7 @@
 import axios from "axios";
 import VueCookies  from "vue-cookies";
+import storage from "./storage";
+
 
 const instance = axios.create({
     // baseURL: "http://103.63.25.154:8080",
@@ -157,13 +159,15 @@ const api = {
             return false
         }
         let res = true;
-        await instance.get("/me", {
+        let data = await instance.get("/me", {
             headers: {
                 "Authorization": token
             }
         }).catch(()=>{
             res =  false
         })
+        if(res)
+            storage.userMe.setter(data.data.data.id, data.data.data.name, data.data.data.email)
         return res
     },
     async listCustomer(page){
@@ -450,7 +454,26 @@ const api = {
         }
 
         return res
-    }
+    },
+    async editMe(id,name, email){
+        let token = await VueCookies.get("token")
+        let res = true
+        if(!token || token == null){
+            return false
+        }
+        await instance.put(`/user/${id}`,{
+            name: name,
+            email: email
+        }, {
+            headers:{
+                "Authorization": token
+            }
+        }).catch(()=>{
+            res = false
+        })
+
+        return res
+    },
 }
 
 export default api

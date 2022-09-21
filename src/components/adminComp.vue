@@ -2,13 +2,14 @@
     <div>
         <h2>Admin</h2>
         <p class="m-0">Profile Admin</p>
+
+        <div class="alert alert-danger" role="alert" v-if="error">
+            {{msgError}}
+        </div>
     </div>
     <div class="mt-4" v-if="newSales>0">
         <h5 class="mb-3 sub-title">Konfirmasi admin baru</h5>
         <hr>
-        <div class="alert alert-danger" role="alert" v-if="error">
-            Terjadi kesalahan, silahkan logout dan login kembali
-        </div>
         <table id="mytable" class="table table-bordred table-striped">
             <thead>
                 <th>Name</th>
@@ -48,45 +49,41 @@
             <div class="flex-grow-1">
                 <div class="mb-3">
                     <p class="p-label">Name</p>
-                    <p class="p-form">Fahrul</p>
+                    <p class="p-form">{{username}}</p>
                 </div>
                 <div class="mb-3">
                     <p class="p-label">Email</p>
-                    <p class="p-form">fahrulputra40@gmail.com</p>
+                    <p class="p-form">{{useremail}}</p>
                 </div>
             </div>
             <div class="devide"></div>
             <div class="flex-grow-1">
                 <div>
                     <h5>Edit Profile</h5>
-                    <form>
+                    <form @submit.prevent="changeProfile">
                         <div class="mb-3">
                             <label class="form-label">Name</label>
-                            <input type="text" class="form-control">
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Email address</label>
-                            <input type="email" class="form-control">
+                            <input v-model="name" type="text" class="form-control">
                         </div>
                         <div>
-                            <button class="btn btn-add btn-primary">Ubah</button>
+                            <button type="submit" class="btn btn-add btn-primary">Ubah</button>
                         </div>
                     </form>
                 </div>
                 <div class="mt-5">
                     <h5>Ubah Password</h5>
-                    <form>
+                    <form @submit.prevent="changePassword">
                         <div class="mb-3">
                             <label class="form-label">Password lama</label>
-                            <input type="password" class="form-control">
+                            <input v-model="oldPassword" type="password" class="form-control">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Password baru</label>
-                            <input type="password" class="form-control">
+                            <input v-model="newPassword" type="password" class="form-control">
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Konfirmasi password baru</label>
-                            <input type="password" class="form-control">
+                            <input v-model="reNewPassword" type="password" class="form-control">
                         </div>
                         <div>
                             <button class="btn btn-add btn-primary">Simpan</button>
@@ -101,13 +98,23 @@
 
 <script>
 import service from "@/service"
+import storage from "@/storage"
+
+const ERROR_MSG = "Terjadi kesalahan, silahkan logout dan login kembali";
+const ERROR_PASSWORD = "Password baru tidak sama";
 
 export default {
     data() {
         return {
             view: true,
             model: [],
-            error: false
+            error: false,
+            email:"",
+            name:"",
+            oldPassword:"",
+            newPassword:"",
+            reNewPassword:"",
+            msgError:""
         }
     },
     methods: {
@@ -122,7 +129,34 @@ export default {
             if(data.status){
                 this.model = data.data
             }
-        }  
+        },
+        async changeProfile(){
+            this.error = false
+            let res = await service.editMe(storage.userMe.id,this.name, storage.userMe.email)
+            if(res){
+                this.name = ""
+                storage.userMe.setter(this.name, storage.userMe.email)
+                await service.me()
+                return
+            }
+            this.error = true
+            this.msgError = ERROR_MSG
+        },
+        async changePassword(){
+            this.error = false
+            if(this.newPassword != this.reNewPassword){
+                this.error = true
+                this.msgError = ERROR_PASSWORD
+                return
+            }
+            let res = await service.changePassword(this.oldPassword, this.newPassword)
+            if(!res){
+                this.error = true
+                this.msgError = ERROR_MSG
+                return
+            }
+            await service.me()
+        }
     },
     async mounted() {
         this.load()
@@ -130,6 +164,12 @@ export default {
     computed:{
         newSales(){
             return this.model.length
+        },
+        username(){
+            return storage.userMe.name
+        },
+        useremail(){
+            return storage.userMe.email
         }
     }
 }
