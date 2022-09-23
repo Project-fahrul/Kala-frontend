@@ -51,11 +51,11 @@
 
         </table>
     </div>
-    <div class="mt-3">
-        <button class="btn disabled">Prev</button>
-        <p class="btn page-evidance">1/1</p>
-        <button class="btn disabled">Next</button>
-    </div>
+    <!-- <div class="mt-3">
+        <button @click="prev" class="btn" :class="[isPrevActive ? 'page-evidance' : 'disabled']">Prev</button>
+        <p class="btn page-evidance">{{page}}/{{pages}}</p>
+        <button @click="next" class="btn" :class="[isNextActive ? 'page-evidance' : 'disabled']">Next</button>
+    </div> -->
 
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -112,10 +112,42 @@ export default {
             bootModel: null,
             isCreate: false,
             selectedUser: null,
-            error: false
+            error: false,
+            page: 1,
+            pages: 1
         }
     },
+    computed:{
+            isNextActive(){
+                return this.page < this.pages
+            },
+            isPrevActive(){
+                return this.page > 1
+            }
+        },  
     methods: {
+        async next() {
+            if (!this.isNextActive) {
+                return
+            }
+            this.page++
+            let data = await service.allSales(this.page)
+            if (data) {
+                this.model = data.data.Sales
+                this.pages = data.data.TotalPage
+            }
+        },
+        async prev() {
+            if (!this.isPrevActive) {
+                return
+            }
+            this.page--
+            let data = await service.allSales(this.page)
+            if (data) {
+                this.model = data.data.Sales
+                this.pages = data.data.TotalPage
+            }
+        },
         async lihat(id) {
             this.view = true
             let res = await service.getSales(id)
@@ -147,6 +179,10 @@ export default {
             this.name = sales.data.name
         },
         tambah() {
+            console.log("aa");
+            this.email = ""
+            this.phoneNumber = ""
+            this.name = ""
             this.error = false
             this.isCreate = true
             this.view = false
@@ -180,6 +216,7 @@ export default {
     async mounted() {
         let data = await service.allSales(0)
         this.model = data.data
+        // this.pages = data.data.TotalPage
         this.bootModel = new bootstrap.Modal("#exampleModal")
     },
 }

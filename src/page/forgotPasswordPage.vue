@@ -21,7 +21,7 @@
                     {{message}}
                 </div>
             </div>
-                <form @submit.prevent="login">
+                <form @submit.prevent="submit">
                     <div class="mb-4 form-box">
                         <label class="form-label">Email address</label>
                         <input v-model="email" type="email" class="form-control" aria-describedby="emailHelp" required>
@@ -29,7 +29,7 @@
                     <div class="mb-4 form-box">
                         <div></div>
                         <div class="btnn">
-                            <button class="btn">Konfirmasi</button>
+                            <button type="submit" class="btn">Konfirmasi</button>
                             <router-link to="/" class="btn ms-3 back">Back</router-link>
                         </div>
                     </div>
@@ -40,7 +40,7 @@
 </template>
 
 <script>
-    // import service from "@/service"
+    import service from "@/service"
     export default {
        data(){
         return {
@@ -48,7 +48,21 @@
             name: "",
             email: "",
             password: "",
-            alertClass: "alert-danger"
+            alertClass: "alert-danger",
+            error: false,
+            message: ""
+        }
+       },
+       methods:{
+        async submit(){
+            let res = await service.forgotPassword(this.email)
+            if(res){
+                this.error = true
+                this.message = "Cek email anda, dan masukk menggunakan password sementara"
+            }else{
+                this.error = true
+                this.message = "Terjadi maslah harap coba lagi"
+            }
         }
        }
     }

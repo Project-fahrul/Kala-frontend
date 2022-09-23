@@ -127,11 +127,11 @@
             </div>
         </div>
     </div>
-    <div class="mt-3">
+    <!-- <div class="mt-3">
         <button class="btn disabled">Prev</button>
         <p class="btn page-evidance">1/1</p>
         <button class="btn disabled">Next</button>
-    </div>
+    </div> -->
 </template>
 
 

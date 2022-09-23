@@ -12,6 +12,7 @@ const instance = axios.create({
     }
 })
 
+export {instance}
 
 const api = {
     verifiedUser: async (id, action) => {
@@ -76,25 +77,14 @@ const api = {
             status: true
         };
 
-        let response = await instance.post("/user/forgot-password", {
+         await instance.post("/user/forgot-password", {
             email: email,
-        }).catch((err)=>{
+        }).catch(()=>{
             data.status = false
-            data.message = err.response.data.message
         })
 
-        if (data.status == false){
-            return data
-        }
-        else if(response.data.data.role != "admin")
-        {
-            return {
-                status: false,
-                message: "Not allowed"
-            }
-        }
 
-        return data  
+        return data.status
     },
     login: async (email, password)=>{
         let data = {
@@ -133,14 +123,15 @@ const api = {
     logout: async ()=>{
         await VueCookies.remove("token")
     },
-    registration: async (name, email, password)=>{
+    registration: async (name, email, password, hp)=>{
         let res = {
             status: true
         };
         await instance.post("/user/registration", {
             email: email,
             password: password,
-            name: name
+            name: name,
+            phone: hp
         }).catch((e)=>{
             console.log(e.response.data);
             if(e.response.data.includes("duplicate key"))
@@ -218,7 +209,7 @@ const api = {
 
         return res
     },
-    async allSales(){
+    async allSales(page){
         let token = await VueCookies.get("token")
         let res = {
             status: true
@@ -228,7 +219,7 @@ const api = {
                 status: false
             }
         }
-        let customer = await instance.get(`/user/sales`, {
+        let customer = await instance.get(`/user/sales?page=${page}`, {
             headers:{
                 "Authorization": token
             }
@@ -385,7 +376,7 @@ const api = {
 
         return res
     },
-    async listEvidance(){
+    async listEvidance(page){
         let token = await VueCookies.get("token")
         let res = {
             status: true
@@ -394,7 +385,7 @@ const api = {
             res.status = false
             return res
         }
-        let data = await instance.get(`/evidance`, {
+        let data = await instance.get(`/evidance?page=${page}`, {
             headers:{
                 "Authorization": token
             }

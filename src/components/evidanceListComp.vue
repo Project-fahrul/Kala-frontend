@@ -11,7 +11,7 @@
                         <p class="card-text">Jumlah Evidance hari ini tersedia</p>
                     </div>
                     <div class="col-4 d-flex justify-content-center align-items-center">
-                        <h3 class="total-evidance">{{model.length}}</h3>
+                        <h3 class="total-evidance">{{totalEvidance}}</h3>
                     </div>
                 </div>
             </div>
@@ -38,7 +38,7 @@
                         <p class="card-text">Jumlah evidance yang tidak dikirimkan ke customer</p>
                     </div>
                     <div class="col-4 d-flex justify-content-center align-items-center">
-                        <h3 class="total-evidance">0</h3>
+                        <h3 class="total-evidance">{{notsend}}</h3>
                     </div>
                 </div>
             </div>
@@ -66,17 +66,19 @@
         </div>
     </div>
     <div class="mt-3">
-        <button class="btn disabled">Prev</button>
-        <p class="btn page-evidance">1/1</p>
-        <button class="btn disabled">Next</button>
+        <button @click="prev" class="btn" :class="[isPrevActive ? 'page-evidance' : 'disabled']">Prev</button>
+        <p class="btn page-evidance">{{page}}/{{pages}}</p>
+        <button @click="next" class="btn" :class="[isNextActive ? 'page-evidance' : 'disabled']">Next</button>
     </div>
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
+                    <div>
                     <h5 class="modal-title" id="exampleModalLabel">Data Evidance</h5>
                     <p class="m-0">sales ke customer</p>
+                    </div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form>
@@ -88,12 +90,12 @@
                             <label class="form-label">Message</label>
                             <input type="text" v-model="message" class="form-control">
                         </div>
-                        <!-- <div class="mb-3">
+                        <div class="mb-3">
                             <label class="form-label">Bukti Evidance</label>
-                            <div>
-                                <img src="" alt="">
+                            <div style="width: 100%;">
+                                <img :src="src" alt="" style="width: 100%;">
                             </div>
-                        </div> -->
+                        </div>
                     </div>
                 </form>
             </div>
@@ -103,7 +105,7 @@
 
 
 <script>
-    import service from '@/service'
+    import service, {instance} from '@/service'
     import bootstrap from 'bootstrap/dist/js/bootstrap'
     export default{
         data(){
@@ -113,10 +115,45 @@
                 model: [],
                 bootModel: null,
                 message: "",
-                send: 0
+                send: 0,
+                src: "",
+                notsend: 0,
+                pages: 1,
+                page: 1,
+                totalEvidance: 0
             }
         },
+        computed:{
+            isNextActive(){
+                return this.page < this.pages
+            },
+            isPrevActive(){
+                return this.page > 1
+            }
+        },  
         methods: {
+            async next(){
+                if(!this.isNextActive){
+                    return
+                }
+                this.page++
+                let data = await service.listEvidance(this.page)
+                if (data){
+                    this.model = data.data.Evidance
+                    this.pages = data.data.TotalPage
+                }
+            },
+            async prev(){
+                if(!this.isPrevActive){
+                    return
+                }
+                this.page--
+                let data = await service.listEvidance(this.page)
+                if (data){
+                    this.model = data.data.Evidance
+                    this.pages = data.data.TotalPage
+                }
+            },
             async lihat(id, status, sales, cus, due, type){
                 console.log(due, type);
                 if(!status)
@@ -127,6 +164,7 @@
                     this.bootModel.toggle()
                     console.log(data.data);
                     this.message = data.data.comment
+                    this.src = instance.getUri() + "/attachment/"+data.data.content
                 }
             },
             isSubmit(dt){
@@ -136,13 +174,16 @@
         async mounted(){
             let data = await service.listEvidance()
             if (data){
-                this.model = data.data
+                this.model = data.data.Evidance
+                this.pages = data.data.TotalPage
             }
             this.bootModel = new bootstrap.Modal("#exampleModal")
 
             data = await service.count()
 
             this.send = data.data.Send
+            this.notsend = data.data.Notsend
+            this.totalEvidance = data.data.Total
         }
     }
 </script>
