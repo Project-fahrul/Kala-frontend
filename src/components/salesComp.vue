@@ -51,11 +51,11 @@
 
         </table>
     </div>
-    <!-- <div class="mt-3">
+    <div class="mt-3">
         <button @click="prev" class="btn" :class="[isPrevActive ? 'page-evidance' : 'disabled']">Prev</button>
         <p class="btn page-evidance">{{page}}/{{pages}}</p>
         <button @click="next" class="btn" :class="[isNextActive ? 'page-evidance' : 'disabled']">Next</button>
-    </div> -->
+    </div>
 
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -214,9 +214,9 @@ export default {
         }
     },
     async mounted() {
-        let data = await service.allSales(0)
-        this.model = data.data
-        // this.pages = data.data.TotalPage
+        let data = await service.allSales(this.page)
+        this.model = data.data.Sales
+        this.pages = data.data.TotalPage
         this.bootModel = new bootstrap.Modal("#exampleModal")
     },
 }

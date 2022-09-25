@@ -37,7 +37,7 @@
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Data</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
+    </div>
                         <div v-if="loading" class="modal-body mb-3 d-flex justify-content-center">
                             <div class="loader"></div>
                         </div>
@@ -104,7 +104,7 @@
                             <div class="mb-3">
                                 <label class="form-label">Nomor Rangka</label>
                                 <input type="text" class="form-control" :disabled="view" required v-model="rangka">
-                            </div>
+    </div>
                             <div class="mb-3">
                                 <label class="form-label">Tipe Kendaraan</label>
                                 <input type="text" class="form-control" :disabled="view" required v-model="typeKendaraan">
@@ -127,11 +127,11 @@
             </div>
         </div>
     </div>
-    <!-- <div class="mt-3">
-        <button class="btn disabled">Prev</button>
-        <p class="btn page-evidance">1/1</p>
-        <button class="btn disabled">Next</button>
-    </div> -->
+    <div class="mt-3">
+        <button @click="prev" class="btn" :class="[isPrevActive ? 'page-evidance' : 'disabled']">Prev</button>
+        <p class="btn page-evidance">{{page}}/{{pages}}</p>
+        <button @click="next" class="btn" :class="[isNextActive ? 'page-evidance' : 'disabled']">Next</button>
+    </div>
 </template>
 
 
@@ -172,10 +172,42 @@ export default {
             errorTglAngsuran: false,
             errorTglSTNK: false,
             isCreate: true,
-            idd: -1
+            idd: -1,
+            pages: 1,
+                page: 1,
         }
     },
+    computed:{
+            isNextActive(){
+                return this.page < this.pages
+            },
+            isPrevActive(){
+                return this.page > 1
+            }
+        },  
     methods: {
+        async next(){
+                if(!this.isNextActive){
+                    return
+                }
+                this.page++
+                let data = await service.listCustomer(this.page)
+                if (data){
+                    this.model = data.data.Customer
+                    this.pages = data.data.TotalPage
+                }
+            },
+            async prev(){
+                if(!this.isPrevActive){
+                    return
+                }
+                this.page--
+                let data = await service.listCustomer(this.page)
+                if (data){
+                    this.model = data.data.Customer
+                    this.pages = data.data.TotalPage
+                }
+            },
         async save(){
             this.errorTglAngsuran = false
             this.errorTglDec = false
@@ -350,14 +382,14 @@ export default {
             keyboard: false
         })
         let data = await service.listCustomer(1)
-        if (data.status)
-            this.model = data.data
+        if (data.status){
+            this.model = data.data.Customer
+            this.pages = data.data.TotalPage
+        }
         data = await service.allSales()
         if (data.status) {
             this.salesModel = data.data
         }
-        this.now = new Date(Date.now()).toISOString().split('T')[0]
-        console.log("noe", this.now);
     }
 }
 </script>

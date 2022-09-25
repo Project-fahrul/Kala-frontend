@@ -56,7 +56,7 @@
        methods:{
         async submit(){
             let res = await service.forgotPassword(this.email)
-            if(res){
+            if(res.status){
                 this.error = true
                 this.message = "Cek email anda, dan masukk menggunakan password sementara"
             }else{

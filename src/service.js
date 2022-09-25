@@ -79,12 +79,12 @@ const api = {
 
          await instance.post("/user/forgot-password", {
             email: email,
-        }).catch(()=>{
+        }).catch((err)=>{
             data.status = false
+            data.message = err.response.data.message
         })
 
-
-        return data.status
+        return data  
     },
     login: async (email, password)=>{
         let data = {
