@@ -163,8 +163,11 @@ export default {
                 await service.deleteSales(id)
             }
 
-            let data = await service.allSales(0)
-            this.model = data.data
+            let data = await service.allSales(this.page)
+            if (data) {
+                this.model = data.data.Sales
+                this.pages = data.data.TotalPage
+            }
         },
         async edit(id) {
             this.error = false
@@ -209,8 +212,11 @@ export default {
                 return
             }
             this.bootModel.toggle()
-            let data = await service.allSales(0)
-            this.model = data.data
+            let data = await service.allSales(this.page)
+            if (data) {
+                this.model = data.data.Sales
+                this.pages = data.data.TotalPage
+            }
         }
     },
     async mounted() {
