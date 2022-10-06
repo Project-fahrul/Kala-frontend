@@ -148,6 +148,7 @@ input:focus{
   .dash-wrapper{
     width: calc(100% - 280px);
     padding: 30px 15px;
+    overflow-y: scroll;
   }
 
   .page-evidance{
