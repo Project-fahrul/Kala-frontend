@@ -182,7 +182,6 @@ export default {
             this.name = sales.data.name
         },
         tambah() {
-            console.log("aa");
             this.email = ""
             this.phoneNumber = ""
             this.name = ""
