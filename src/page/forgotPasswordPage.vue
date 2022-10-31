@@ -58,7 +58,7 @@
             let res = await service.forgotPassword(this.email)
             if(res.status){
                 this.error = true
-                this.message = "Cek email anda, dan masukk menggunakan password sementara"
+                this.message = "Cek email anda, dan masuk menggunakan password sementara"
             }else{
                 this.error = true
                 this.message = "Terjadi maslah harap coba lagi"
