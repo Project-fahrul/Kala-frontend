@@ -4,7 +4,7 @@ import storage from "./storage";
 
 
 const instance = axios.create({
-    baseURL: "https://api.retentionhkblk.com",
+    baseURL: "https://retentionhkblk.com",
     // baseURL: "http://localhost:8080",
     timeout: 60000,
     headers:{
