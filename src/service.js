@@ -23,7 +23,7 @@ const api = {
         let res = {
             status : true
         }
-        await instance.get(`user/verified/${id}/${action}`, {
+        await instance.get(`api/user/verified/${id}/${action}`, {
             headers: {
                 "Authorization": token
             }
@@ -38,7 +38,7 @@ const api = {
         if(!token || token == null){
             return false
         }
-        await instance.patch(`/user/changePassword/self`,{
+        await instance.patch(`api/user/changePassword/self`,{
             "oldPassword": old,
             "newPassword": newPassword
         }, {
@@ -59,7 +59,7 @@ const api = {
         let res = {
             status : true
         }
-        let data = await instance.get("/user/sales-not-verified", {
+        let data = await instance.get("api/user/sales-not-verified", {
             headers: {
                 "Authorization": token
             }
@@ -77,7 +77,7 @@ const api = {
             status: true
         };
 
-         await instance.post("/user/forgot-password", {
+         await instance.post("api/user/forgot-password", {
             email: email,
         }).catch((err)=>{
             data.status = false
@@ -91,7 +91,7 @@ const api = {
             status: true
         };
 
-        let response = await instance.post("/auth", {
+        let response = await instance.post("api/auth", {
             email: email,
             password: password
         }).catch((err)=>{
@@ -127,7 +127,7 @@ const api = {
         let res = {
             status: true
         };
-        await instance.post("/user/registration", {
+        await instance.post("api/user/registration", {
             email: email,
             password: password,
             name: name,
@@ -150,7 +150,7 @@ const api = {
             return false
         }
         let res = true;
-        let data = await instance.get("/me", {
+        let data = await instance.get("api/me", {
             headers: {
                 "Authorization": token
             }
@@ -171,7 +171,7 @@ const api = {
                 status: false
             }
         }
-        let customer = await instance.get(`/customer?page=${page}`, {
+        let customer = await instance.get(`api/customer?page=${page}`, {
             headers:{
                 "Authorization": token
             }
@@ -195,7 +195,7 @@ const api = {
                 status: false
             }
         }
-        let customer = await instance.get(`/customer/${id}`, {
+        let customer = await instance.get(`api/customer/${id}`, {
             headers:{
                 "Authorization": token
             }
@@ -219,7 +219,7 @@ const api = {
                 status: false
             }
         }
-        let customer = await instance.get(`/user/sales?page=${page}`, {
+        let customer = await instance.get(`api/user/sales?page=${page}`, {
             headers:{
                 "Authorization": token
             }
@@ -239,7 +239,7 @@ const api = {
         if(!token || token == null){
             return false
         }
-        await instance.post(`/customer`,data, {
+        await instance.post(`api/customer`,data, {
             headers:{
                 "Authorization": token
             }
@@ -255,7 +255,7 @@ const api = {
         if(!token || token == null){
             return false
         }
-        await instance.patch(`/customer/${id}`,data, {
+        await instance.patch(`api/customer/${id}`,data, {
             headers:{
                 "Authorization": token
             }
@@ -271,7 +271,7 @@ const api = {
         if(!token || token == null){
             return false
         }
-        await instance.delete(`/customer/${id}`, {
+        await instance.delete(`api/customer/${id}`, {
             headers:{
                 "Authorization": token
             }
@@ -287,7 +287,7 @@ const api = {
         if(!token || token == null){
             return false
         }
-        await instance.delete(`/user/${id}`, {
+        await instance.delete(`api/user/${id}`, {
             headers:{
                 "Authorization": token
             }
@@ -306,7 +306,7 @@ const api = {
         if(!token || token == null){
             return false
         }
-        let data = await instance.delete(`/user/sales`, {
+        let data = await instance.delete(`api/user/sales`, {
             headers:{
                 "Authorization": token
             }
@@ -330,7 +330,7 @@ const api = {
             res.status = false
             return res
         }
-        let data = await instance.get(`/user/${id}`, {
+        let data = await instance.get(`api/user/${id}`, {
             headers:{
                 "Authorization": token
             }
@@ -350,7 +350,7 @@ const api = {
         if(!token || token == null){
             return false
         }
-        await instance.post(`/user`,data, {
+        await instance.post(`api/user`,data, {
             headers:{
                 "Authorization": token
             }
@@ -366,7 +366,7 @@ const api = {
         if(!token || token == null){
             return false
         }
-        await instance.put(`/user/${id}`,data, {
+        await instance.put(`api/user/${id}`,data, {
             headers:{
                 "Authorization": token
             }
@@ -385,7 +385,7 @@ const api = {
             res.status = false
             return res
         }
-        let data = await instance.get(`/evidance?page=${page}`, {
+        let data = await instance.get(`api/evidance?page=${page}`, {
             headers:{
                 "Authorization": token
             }
@@ -409,7 +409,7 @@ const api = {
             return res
         }
         let dd = new Date(due).toISOString().split('T')[0]
-        let data = await instance.get(`/evidance/${type}?sales=${sales}&customer=${customer}&due=${dd}`, {
+        let data = await instance.get(`api/evidance/${type}?sales=${sales}&customer=${customer}&due=${dd}`, {
             headers:{
                 "Authorization": token
             }
@@ -432,7 +432,7 @@ const api = {
             res.status = false
             return res
         }
-        let data = await instance.get(`/evidance/count`, {
+        let data = await instance.get(`api/evidance/count`, {
             headers:{
                 "Authorization": token
             }
@@ -452,7 +452,7 @@ const api = {
         if(!token || token == null){
             return false
         }
-        await instance.put(`/user/${id}`,{
+        await instance.put(`api/user/${id}`,{
             name: name,
             email: email
         }, {
